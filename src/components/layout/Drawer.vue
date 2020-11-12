@@ -3,7 +3,7 @@
     v-model="drawer"
     app
     width="260"
-    mobile-break-point='960'
+    mobile-breakpoint="960"
     class="elevation-2"
   >
     Drawer
@@ -15,7 +15,7 @@ export default {
   name: 'NavigationDrawer',
   data () {
     return {
-      drawer: false
+      drawer: null
     }
   }
 }
