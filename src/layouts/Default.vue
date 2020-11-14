@@ -2,7 +2,7 @@
   <v-app>
     <!-- Include Drawer -->
     <navigation-drawer/>
-    <v-main class="ma-6">
+    <v-main>
       <router-view />
     </v-main>
 
