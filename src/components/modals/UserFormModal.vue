@@ -26,7 +26,7 @@
               <v-text-field
                 v-model.trim="user.nombre"
                 label="Nombre"
-                :rules="req"
+                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
@@ -34,7 +34,7 @@
               <v-text-field
                 v-model.trim="user.titulo"
                 label="Titulo"
-                :rules="req"
+                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
@@ -42,62 +42,67 @@
               <v-text-field
                 v-model.trim="user.email"
                 label="Email"
-                :rules="ruleEmail"
+                :rules="validations.ruleEmail"
                 :loading="loading"
                 type="email"
-              />
-            </v-col>
-            <v-col cols="6" class="py-1">
-              <v-text-field
-                v-model.trim="user.telefono"
-                label="Teléfono"
-                :rules="ruleNumber"
-                :loading="loading"
-                type="tel"
-              />
-            </v-col>
-            <v-col cols="6" class="py-1">
-              <v-text-field
-                v-model.trim="user.rfc"
-                label="RFC"
-                :rules="req"
-                :loading="loading"
               />
             </v-col>
             <v-col cols="12" class="py-1">
               <v-textarea
                 v-model.trim="user.direccion"
                 label="Dirección"
-                :rules="req"
+                :rules="validations.req"
                 :loading="loading"
                 rows="1"
                 auto-grow
               />
             </v-col>
-          </v-row>
-          <v-row class="justify-space-between">
-            <v-col cols="3" class="py-1">
+            <v-col cols="4" class="py-1">
+              <v-text-field
+                v-model.trim="user.telefono"
+                label="Teléfono"
+                :rules="validations.ruleNumber"
+                :loading="loading"
+                type="tel"
+              />
+            </v-col>
+            <v-col cols="4" class="py-1">
+              <v-text-field
+                v-model.trim="user.rfc"
+                label="RFC"
+                :rules="validations.req"
+                :loading="loading"
+              />
+            </v-col>
+            <v-col cols="4" class="py-1">
               <v-text-field
                 v-model.trim="user.cp"
                 label="C.P"
-                :rules="ruleCp"
+                :rules="validations.ruleCp"
                 :loading="loading"
               />
             </v-col>
-            <v-col cols="auto" class="py-1">
-              <v-text-field
+          </v-row>
+          <v-row class="justify-space-between">
+            <v-col cols="6" class="py-1">
+              <v-select
                 v-model="user.estado"
                 label="Estado"
-                :rules="req"
+                :items="estados"
+                :rules="validations.req"
                 :loading="loading"
+                clearable
               />
             </v-col>
-            <v-col cols="auto" class="py-1">
-              <v-text-field
+            <v-col cols="6" class="py-1">
+              <v-select
                 v-model="user.municipio"
+                :items="municipios"
                 label="Municipio"
-                :rules="req"
+                :rules="validations.req"
                 :loading="loading"
+                :disabled="!this.user.estado"
+                clearable
               />
             </v-col>
           </v-row>
@@ -109,7 +114,7 @@
                 label="Roles"
                 item-text="nombre"
                 item-value="id"
-                :rules="req"
+                :rules="validations.req"
               />
             </v-col>
             <v-col cols="auto" class="py-1">
@@ -134,15 +139,18 @@
                 v-model.trim="user.password"
                 label="Contraseña"
                 :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                :rules="passwordRules"
+                :rules="validations.passwordRules"
                 :type="showPassword ? 'text' : 'password'"
                 hint="Longitud minima 6 caracteres"
                 @click:append="showPassword = !showPassword"
               />
             </v-col>
+            <v-col class="d-flex align-center justify-end">
+              <p class="mb-0 text-right subtitle-2">*Todos los campos son requeridos</p>
+            </v-col>
           </v-row>
         </v-card-text>
-        <v-card-actions>
+        <v-card-actions class="px-3 pb-3">
           <v-spacer></v-spacer>
           <v-btn
             color="#656565"
@@ -156,7 +164,6 @@
           <v-btn
             color="primary"
             :dark="disableButton ? false : true"
-            small
             type="submit"
             :loading="loadingButton"
             :disabled="disableButton"
@@ -172,9 +179,12 @@
 <script>
 import { User } from '@/interfaces'
 import api from '@/api'
+// import estadosMunicipiosMixin from '@/mixins/estadosMunicipiosMixin'
+import EstadosMunicipios from '@/utils/EstadosMunicipios.json'
 
 export default {
   name: 'UserFormModal',
+  // mixins: [estadosMunicipiosMixin],
   props: {
     roles: {
       type: Array,
@@ -190,38 +200,52 @@ export default {
       loadingButton: false,
       showPassword: false,
       user: new User(),
-      req: [
-        value => !!value || 'Campo requerido.'
-      ],
-      ruleCp: [
-        value => !!value || 'Campo requerido.',
-        value => {
-          if (value.length) {
-            const pattern = /^[0-9]{5}$/
-            return pattern.test(value) || 'CP no válido.'
+      validations: {
+        req: [
+          value => !!value || 'Campo requerido.'
+        ],
+        ruleCp: [
+          value => !!value || 'Campo requerido.',
+          value => {
+            if (value.length) {
+              const pattern = /^[0-9]{5}$/
+              return pattern.test(value) || 'CP no válido.'
+            }
+            return false
           }
-          return false
-        }
-      ],
-      ruleNumber: [
-        value => !!value || 'Campo requerido.',
-        value => {
-          const pattern = /^[0-9]+$/
-          return pattern.test(value) || 'Ingresa solo números.'
-        }
-      ],
-      ruleEmail: [
-        value => !!value || 'Campo requerido.',
-        value => {
-          // const pattern = /^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/
-          const pattern = /^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$/
-          return pattern.test(value) || 'Email no válido.'
-        }
-      ],
-      passwordRules: [
-        value => !!value || 'Campo requerido.',
-        value => value.length >= 6 || 'Minimo 6 caracteres'
-      ]
+        ],
+        ruleNumber: [
+          value => !!value || 'Campo requerido.',
+          value => {
+            const pattern = /^[0-9]+$/
+            return pattern.test(value) || 'Ingresa solo números.'
+          }
+        ],
+        ruleEmail: [
+          value => !!value || 'Campo requerido.',
+          value => {
+            // const pattern = /^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/
+            const pattern = /^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$/
+            return pattern.test(value) || 'Email no válido.'
+          }
+        ],
+        passwordRules: [
+          value => !!value || 'Campo requerido.',
+          value => value.length >= 6 || 'Minimo 6 caracteres'
+        ]
+      }
+    }
+  },
+  computed: {
+    estados () {
+      return EstadosMunicipios.map(row => row.nombre)
+    },
+    municipios () {
+      return EstadosMunicipios
+        .filter(row => row.nombre === this.user.estado)
+        .map(estado => estado.municipios)
+        .reduce((previous, current) => previous.concat(current), [])
+        .sort()
     }
   },
   methods: {
@@ -287,7 +311,7 @@ export default {
           this.$store.dispatch('notify', { success: false, message: error.response.data })
         }
       } else {
-        this.$store.dispatch('notify', { success: false, message: 'Completa los campos requeridos' })
+        this.$store.dispatch('notify', { success: false, message: { message: 'Completa los campos requeridos' } })
       }
     }
   }
