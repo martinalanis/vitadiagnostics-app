@@ -24,7 +24,7 @@
               text
               small
               type="reset"
-              @click="dialog = false"
+              @click="closeModal"
             >
               Cancelar
             </v-btn>
@@ -69,7 +69,7 @@ export default {
           if (confrimationResponse.data.success) {
             const deleteResponse = await api.delete(this.route)
             this.$store.dispatch('notify', { success: true, message: deleteResponse.data })
-            this.$emit('reloadUsers')
+            this.$emit('reloadTable')
             this.closeModal()
           }
           this.loading = false
@@ -89,13 +89,11 @@ export default {
       }, 100)
     },
     closeModal () {
-      this.dialog = false
       this.route = ''
       this.password = ''
       this.showPassword = false
-      setTimeout(() => {
-        this.$refs.form.resetValidation()
-      }, 100)
+      this.$refs.form.resetValidation()
+      this.dialog = false
     }
   }
 }

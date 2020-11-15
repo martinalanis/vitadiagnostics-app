@@ -13,3 +13,11 @@ export const User = () => {
     password: ''
   }
 }
+
+export const Refaccion = () => {
+  return {
+    nombre: '',
+    modelo: '',
+    serie: ''
+  }
+}

@@ -64,7 +64,7 @@ export default {
         try {
           const res = await api.post(`/change-password/${this.id}`, { password: this.password })
           this.$store.dispatch('notify', { success: true, message: res.data })
-          this.$emit('reloadUsers')
+          this.$emit('reloadTable')
           this.closeModal()
         } catch (error) {
           this.loading = false

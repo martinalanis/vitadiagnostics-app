@@ -67,6 +67,11 @@ export default {
           to: '/usuarios',
           icon: 'mdi-account',
           name: 'Usuarios'
+        },
+        {
+          to: '/refacciones',
+          icon: 'mdi-tag',
+          name: 'Refacciones'
         }
       ]
     }

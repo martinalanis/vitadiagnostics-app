@@ -28,7 +28,7 @@
           fab
           small
           color="purple"
-          @click="$refs.lugarForm.add()"
+          @click="$refs.userForm.add()"
           class="d-block d-md-none"
         >
           <v-icon>mdi-plus</v-icon>
@@ -88,9 +88,9 @@
       </template>
     </v-data-table>
     <!-- <user-details :user="usuarios[0]"/> -->
-    <user-form ref="userForm" :roles="roles" @reloadUsers="fetch"/>
-    <confirm-modal ref="confirmModal" @reloadUsers="fetch"/>
-    <change-password-modal ref="changePasswordModal" @reloadUsers="fetch"/>
+    <user-form ref="userForm" :roles="roles" @reloadTable="fetch"/>
+    <confirm-modal ref="confirmModal" @reloadTable="fetch"/>
+    <change-password-modal ref="changePasswordModal" @reloadTable="fetch"/>
   </div>
 </template>
 
@@ -174,7 +174,7 @@ export default {
         this.loading = false
       } catch (error) {
         this.loading = false
-        console.log(error)
+        this.$store.dispatch('notify', { success: false, message: error.response.data })
       }
     },
     getRolColor (id) {

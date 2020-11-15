@@ -42,6 +42,7 @@
               <v-text-field
                 v-model.trim="user.email"
                 label="Email"
+                :error="emailError"
                 :rules="validations.ruleEmail"
                 :loading="loading"
                 type="email"
@@ -201,6 +202,7 @@ export default {
       disableButton: false,
       loadingButton: false,
       showPassword: false,
+      emailError: false,
       user: new User(),
       validations: {
         req: [
@@ -278,19 +280,21 @@ export default {
     openModal (edit) {
       this.dialog = true
       this.editMode = edit
+      this.emailError = false
       // setTimeout(() => {
       //   this.$refs.form.resetValidation()
       // }, 100)
     },
     closeModal () {
-      this.dialog = false
       this.user = new User()
       this.editMode = false
       this.disableButton = false
       this.loading = false
+      this.emailError = false
       setTimeout(() => {
         this.$refs.form.resetValidation()
       }, 100)
+      this.dialog = false
     },
     async save () {
       if (this.$refs.form.validate()) {
@@ -302,13 +306,16 @@ export default {
             : await api.post('/users', this.user)
           if (res.status === 200) {
             this.$store.dispatch('notify', { success: true, message: res.data })
-            this.$emit('reloadUsers')
+            this.$emit('reloadTable')
             // this.dialog = false
             this.closeModal()
           }
           this.loadingButton = false
           this.user = new User()
         } catch (error) {
+          if (error.response.data.errors?.email) {
+            this.emailError = true
+          }
           this.loadingButton = false
           this.$store.dispatch('notify', { success: false, message: error.response.data })
         }
