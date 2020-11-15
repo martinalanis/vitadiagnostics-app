@@ -4,7 +4,7 @@
       <v-col cols="auto" md="8">
         <v-text-field
           v-model="search"
-          label="Buscar"
+          label="Buscar en refacciones"
           prepend-inner-icon="mdi-magnify"
           hide-details
           clearable
@@ -40,7 +40,8 @@
       :items="refacciones"
       :loading="loading"
       :search="search"
-      sort-by="nombre"
+      sort-by="id"
+      sort-desc
       class="elevation-2"
     >
       <template #item.id="{ item }">

@@ -4,7 +4,7 @@
       <v-col cols="auto" md="8">
         <v-text-field
           v-model="search"
-          label="Buscar"
+          label="Buscar en usuarios"
           prepend-inner-icon="mdi-magnify"
           hide-details
           clearable
