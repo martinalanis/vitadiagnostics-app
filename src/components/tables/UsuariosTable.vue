@@ -66,14 +66,14 @@
               <v-icon v-on="on">mdi-dots-vertical</v-icon>
             </template>
             <v-list dense class="py-0 text-right">
-              <v-list-item link @click="$refs.userForm.edit(item.id)" class="px-2 py-0 v_list_dense-h">
+              <v-list-item link @click="$refs.changePasswordModal.openModal(item.id)" class="px-2 py-0 v_list_dense-h">
                 <v-list-item-title class="caption">Cambiar contraseña</v-list-item-title>
               </v-list-item>
               <v-divider></v-divider>
               <v-list-item
                 link
                 class="px-2 py-0 v_list_dense-h red-text"
-                @click="$refs.modalConfirm.openModal(`/users/${item.id}`)"
+                @click="$refs.confirmModal.openModal(`/users/${item.id}`)"
               >
                 <v-list-item-title class="caption">Eliminar</v-list-item-title>
               </v-list-item>
@@ -89,7 +89,8 @@
     </v-data-table>
     <!-- <user-details :user="usuarios[0]"/> -->
     <user-form ref="userForm" :roles="roles" @reloadUsers="fetch"/>
-    <modal-confirm ref="modalConfirm" @reloadUsers="fetch"/>
+    <confirm-modal ref="confirmModal" @reloadUsers="fetch"/>
+    <change-password-modal ref="changePasswordModal" @reloadUsers="fetch"/>
   </div>
 </template>
 
@@ -98,12 +99,14 @@ import dayjs from 'dayjs'
 import api from '@/api'
 import UserForm from '@/components/modals/UserFormModal'
 import UserDetails from '@/components/ui/UserDetails'
-import ModalConfirm from '../../components/ui/ConfirmModal'
+import ConfirmModal from '@/components/modals/ConfirmModal'
+import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
 
 export default {
   name: 'UsuariosTable',
   components: {
-    ModalConfirm,
+    ChangePasswordModal,
+    ConfirmModal,
     UserDetails,
     UserForm
   },

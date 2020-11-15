@@ -146,7 +146,9 @@
               />
             </v-col>
             <v-col class="d-flex align-center justify-end">
-              <p class="mb-0 text-right subtitle-2">*Todos los campos son requeridos</p>
+              <p class="mb-0 text-right subtitle-2">
+                <small><i>*Todos los campos son requeridos</i></small>
+              </p>
             </v-col>
           </v-row>
         </v-card-text>
