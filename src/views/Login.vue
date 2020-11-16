@@ -11,11 +11,11 @@
               </h2>
               <v-card class="mb-12">
                 <div class="modal_header_icon blue small elevation-6">
-                  <v-icon x-large color="#FFF">mdi-login</v-icon>
+                  <v-icon large color="#FFF">mdi-login</v-icon>
                   <!-- <img src="@/assets/user2.png" alt="" style="width:70px;"> -->
                 </div>
                 <v-card-title>
-                  <p class="title pl-12 ml-12">
+                  <p class="title pl-12 ml-10">
                     LOGIN
                   </p>
                 </v-card-title>
@@ -86,6 +86,11 @@ export default {
       }
     }
   },
+  created () {
+    // const cookies = this.$cookies.keys()
+    // console.log(cookies)
+    // console.log(this.$cookies.get('vd_token'))
+  },
   methods: {
     async login () {
       if (this.$refs.form.validate()) {
@@ -95,6 +100,8 @@ export default {
           console.log(res.data)
           if (res.data.token) {
             this.$store.dispatch('notify', { success: true, message: 'Bienvenido' })
+            this.$store.commit('auth/SET_TOKEN', res.data.token)
+            this.$router.replace({ name: 'dashboard' })
           }
         } catch (error) {
           this.$store.dispatch('notify', { success: false, message: error.response.data })
