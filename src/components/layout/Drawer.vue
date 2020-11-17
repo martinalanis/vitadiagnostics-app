@@ -13,8 +13,8 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title class="white--text">Admin</v-list-item-title>
-          <v-list-item-subtitle class="white--text">Logged In</v-list-item-subtitle>
+          <v-list-item-title class="white--text caption">{{ user.nombre }}</v-list-item-title>
+          <v-list-item-subtitle class="white--text caption">{{ user.email }}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -38,11 +38,12 @@
     </v-list>
 
     <template v-slot:append>
-      <v-divider></v-divider>
+      <!-- <v-divider></v-divider> -->
       <v-btn
         block
-        text
         class="text-caption"
+        color="grey lighten-2"
+        @click="$store.dispatch('auth/logout')"
       >
         Cerrar sesión
         <v-icon right small>mdi-logout</v-icon>
@@ -52,6 +53,9 @@
 </template>
 
 <script>
+import api from '@/api'
+import { mapState } from 'vuex'
+
 export default {
   name: 'NavigationDrawer',
   data () {
@@ -74,6 +78,25 @@ export default {
           name: 'Refacciones'
         }
       ]
+    }
+  },
+  created () {
+    this.fetchUserData()
+  },
+  computed: {
+    ...mapState({
+      user: state => state.auth.user
+    })
+  },
+  methods: {
+    async fetchUserData () {
+      try {
+        const res = await api.get('/auth/me')
+        console.log(res.data)
+        this.$store.commit('auth/SET_USER', res.data)
+      } catch (error) {
+        this.$store.dispatch('notify', { success: false, message: error.response.data })
+      }
     }
   }
 }

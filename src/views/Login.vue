@@ -95,6 +95,7 @@ export default {
     async login () {
       if (this.$refs.form.validate()) {
         // console.log(this.form)
+        this.loading = true
         try {
           const res = await api.post('/auth/login', this.form)
           console.log(res.data)
@@ -103,7 +104,9 @@ export default {
             this.$store.commit('auth/SET_TOKEN', res.data.token)
             this.$router.replace({ name: 'dashboard' })
           }
+          this.loading = false
         } catch (error) {
+          this.loading = false
           this.$store.dispatch('notify', { success: false, message: error.response.data })
         }
       }

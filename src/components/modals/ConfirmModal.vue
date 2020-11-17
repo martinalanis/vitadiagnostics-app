@@ -65,7 +65,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.loading = true
         try {
-          const confrimationResponse = await api.post('admin-confirm', { password: this.password })
+          const confrimationResponse = await api.post('/auth/admin-confirm', { password: this.password })
           if (confrimationResponse.data.success) {
             const deleteResponse = await api.delete(this.route)
             this.$store.dispatch('notify', { success: true, message: deleteResponse.data })
