@@ -42,7 +42,7 @@
       <v-btn
         block
         class="text-caption"
-        color="grey lighten-2"
+        color="grey lighten-3"
         @click="$store.dispatch('auth/logout')"
       >
         Cerrar sesión
@@ -68,14 +68,19 @@ export default {
           name: 'Inicio'
         },
         {
-          to: '/usuarios',
+          to: '/clientes',
           icon: 'mdi-account',
-          name: 'Usuarios'
+          name: 'Clientes'
         },
         {
           to: '/refacciones',
           icon: 'mdi-tag',
           name: 'Refacciones'
+        },
+        {
+          to: '/usuarios',
+          icon: 'mdi-account',
+          name: 'Usuarios'
         }
       ]
     }

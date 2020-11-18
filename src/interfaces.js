@@ -1,3 +1,25 @@
+export const Client = () => {
+  return {
+    nombre: '',
+    razon_social: '',
+    email: '',
+    telefonos: '',
+    rfc: '',
+    direccion: '',
+    cp: '',
+    estado: '',
+    municipio: ''
+  }
+}
+
+export const Refaccion = () => {
+  return {
+    nombre: '',
+    modelo: '',
+    serie: ''
+  }
+}
+
 export const User = () => {
   return {
     nombre: '',
@@ -11,13 +33,5 @@ export const User = () => {
     rol_id: null,
     estatus: 1,
     password: ''
-  }
-}
-
-export const Refaccion = () => {
-  return {
-    nombre: '',
-    modelo: '',
-    serie: ''
   }
 }

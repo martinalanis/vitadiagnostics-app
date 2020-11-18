@@ -1,16 +1,6 @@
 <template>
   <div>
-    <v-row class="align-center mb-2">
-      <v-col cols="auto" md="8">
-        <v-text-field
-          v-model="search"
-          label="Buscar en usuarios"
-          prepend-inner-icon="mdi-magnify"
-          hide-details
-          clearable
-          solo
-        />
-      </v-col>
+    <v-row>
       <v-spacer></v-spacer>
       <v-col cols="auto">
         <v-btn
@@ -35,9 +25,44 @@
         </v-btn>
       </v-col>
     </v-row>
+    <v-row class="align-center mb-2">
+      <v-col cols="auto" md="7">
+        <v-text-field
+          v-model="search"
+          label="Buscar en usuarios"
+          prepend-inner-icon="mdi-magnify"
+          hide-details
+          clearable
+          solo
+        />
+      </v-col>
+      <v-spacer></v-spacer>
+      <v-col cols="auto">
+        <p class="subtitle-2 text--secondary mb-0">Mostrar usuarios</p>
+        <v-radio-group
+          v-model="filter"
+          row
+          dense
+          class="mt-0"
+        >
+          <v-radio
+            label="Todos"
+            value="todos"
+          ></v-radio>
+          <v-radio
+            label="Activos"
+            value="activo"
+          ></v-radio>
+          <v-radio
+            label="Inactivos"
+            value="inactivo"
+          ></v-radio>
+        </v-radio-group>
+      </v-col>
+    </v-row>
     <v-data-table
       :headers="headers"
-      :items="usuarios"
+      :items="usuariosFiltered"
       :loading="loading"
       :search="search"
       sort-by="nombre"
@@ -87,7 +112,6 @@
         </td>
       </template>
     </v-data-table>
-    <!-- <user-details :user="usuarios[0]"/> -->
     <user-form ref="userForm" :roles="roles" @reloadTable="fetch"/>
     <confirm-modal ref="confirmModal" @reloadTable="fetch"/>
     <change-password-modal ref="changePasswordModal" @reloadTable="fetch"/>
@@ -112,6 +136,7 @@ export default {
   },
   data () {
     return {
+      filter: 'todos',
       usuariosData: [],
       roles: [],
       headers: [
@@ -161,6 +186,11 @@ export default {
           lastModified: dayjs(us.updated_at).format('DD/MM/YYYY HH:mm:ss') || ''
         }
       })
+    },
+    usuariosFiltered () {
+      return this.filter === 'todos'
+        ? this.usuarios
+        : this.usuarios.filter(user => user.estatus === this.filter)
     }
   },
   methods: {
@@ -186,7 +216,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

@@ -16,7 +16,7 @@
           <p class="title form_title">
             <span v-if="editMode">EDITAR</span>
             <span v-else>NUEVO</span>
-            USUARIO
+            CLIENTE
           </p>
         </v-card-title>
         <!-- <v-divider></v-divider> -->
@@ -24,7 +24,7 @@
           <v-row>
             <v-col cols="12" class="py-1">
               <v-text-field
-                v-model.trim="user.nombre"
+                v-model.trim="form.nombre"
                 label="Nombre"
                 :rules="validations.ruleAlpha"
                 :loading="loading"
@@ -32,18 +32,16 @@
             </v-col>
             <v-col cols="6" class="py-1">
               <v-text-field
-                v-model.trim="user.titulo"
-                label="Titulo"
-                :rules="validations.ruleAlphaDot"
-                hint="Caracteres permitidos: . -"
+                v-model.trim="form.razon_social"
+                label="Razón Social"
+                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
             <v-col cols="6" class="py-1">
               <v-text-field
-                v-model.trim="user.email"
+                v-model.trim="form.email"
                 label="Email"
-                :error="emailError"
                 :rules="validations.ruleEmail"
                 :loading="loading"
                 type="email"
@@ -51,7 +49,7 @@
             </v-col>
             <v-col cols="12" class="py-1">
               <v-textarea
-                v-model.trim="user.direccion"
+                v-model.trim="form.direccion"
                 label="Dirección"
                 :rules="validations.ruleAddress"
                 :loading="loading"
@@ -62,7 +60,7 @@
             </v-col>
             <v-col cols="4" class="py-1">
               <v-text-field
-                v-model.trim="user.telefono"
+                v-model.trim="form.telefonos"
                 label="Teléfono"
                 :rules="validations.ruleTelephone"
                 :error-count="2"
@@ -72,7 +70,7 @@
             </v-col>
             <v-col cols="4" class="py-1">
               <v-text-field
-                v-model.trim="user.rfc"
+                v-model.trim="form.rfc"
                 label="RFC"
                 :rules="validations.req"
                 :loading="loading"
@@ -80,7 +78,7 @@
             </v-col>
             <v-col cols="4" class="py-1">
               <v-text-field
-                v-model.trim="user.cp"
+                v-model.trim="form.cp"
                 label="C.P"
                 :rules="validations.ruleCp"
                 :loading="loading"
@@ -90,7 +88,7 @@
           <v-row class="justify-space-between">
             <v-col cols="6" class="py-1">
               <v-select
-                v-model="user.estado"
+                v-model="form.estado"
                 label="Estado"
                 :items="estados"
                 :rules="validations.req"
@@ -100,59 +98,14 @@
             </v-col>
             <v-col cols="6" class="py-1">
               <v-select
-                v-model="user.municipio"
+                v-model="form.municipio"
                 :items="municipios"
                 label="Municipio"
                 :rules="validations.req"
                 :loading="loading"
-                :disabled="!this.user.estado"
+                :disabled="!this.form.estado"
                 clearable
               />
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="5" class="py-1">
-              <v-select
-                v-model="user.rol_id"
-                :items="roles"
-                label="Roles"
-                item-text="nombre"
-                item-value="id"
-                :rules="validations.req"
-              />
-            </v-col>
-            <v-col cols="auto" class="py-1">
-              <v-radio-group
-                v-model="user.estatus"
-                row
-              >
-                <v-radio
-                  label="Activo"
-                  :value="1"
-                ></v-radio>
-                <v-radio
-                  label="Inactivo"
-                  :value="0"
-                ></v-radio>
-              </v-radio-group>
-            </v-col>
-          </v-row>
-          <v-row v-if="!editMode">
-            <v-col cols="5">
-              <v-text-field
-                v-model.trim="user.password"
-                label="Contraseña"
-                :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                :rules="validations.passwordRules"
-                :type="showPassword ? 'text' : 'password'"
-                hint="Longitud minima 6 caracteres"
-                @click:append="showPassword = !showPassword"
-              />
-            </v-col>
-            <v-col class="d-flex align-center justify-end">
-              <p class="mb-0 text-right subtitle-2">
-                <small><i>*Todos los campos son requeridos</i></small>
-              </p>
             </v-col>
           </v-row>
         </v-card-text>
@@ -183,20 +136,12 @@
 </template>
 
 <script>
-import { User } from '@/interfaces'
+import { Client } from '@/interfaces'
 import api from '@/api'
-// import estadosMunicipiosMixin from '@/mixins/estadosMunicipiosMixin'
 import EstadosMunicipios from '@/utils/EstadosMunicipios.json'
 
 export default {
-  name: 'UserFormModal',
-  // mixins: [estadosMunicipiosMixin],
-  props: {
-    roles: {
-      type: Array,
-      default: () => []
-    }
-  },
+  name: 'ClientFormModal',
   data () {
     return {
       dialog: false,
@@ -204,9 +149,7 @@ export default {
       loading: false,
       disableButton: false,
       loadingButton: false,
-      showPassword: false,
-      emailError: false,
-      user: new User(),
+      form: new Client(),
       validations: {
         req: [
           value => !!value || 'Campo requerido.'
@@ -242,16 +185,16 @@ export default {
             return false
           }
         ],
-        ruleTelephone: [
+        ruleNumber: [
           value => !!value || 'Campo requerido.',
-          value => (value || '').length <= 10 || 'Max 10 caracteres',
           value => {
             const pattern = /^[0-9]+$/
             return pattern.test(value) || 'Ingresa solo números.'
           }
         ],
-        ruleNumber: [
+        ruleTelephone: [
           value => !!value || 'Campo requerido.',
+          value => (value || '').length <= 10 || 'Max 10 caracteres',
           value => {
             const pattern = /^[0-9]+$/
             return pattern.test(value) || 'Ingresa solo números.'
@@ -264,10 +207,6 @@ export default {
             const pattern = /^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$/
             return pattern.test(value) || 'Email no válido.'
           }
-        ],
-        passwordRules: [
-          value => !!value || 'Campo requerido.',
-          value => value.length >= 6 || 'Minimo 6 caracteres'
         ]
       }
     }
@@ -278,7 +217,7 @@ export default {
     },
     municipios () {
       return EstadosMunicipios
-        .filter(row => row.nombre === this.user.estado)
+        .filter(row => row.nombre === this.form.estado)
         .map(estado => estado.municipios)
         .reduce((previous, current) => previous.concat(current), [])
         .sort()
@@ -288,41 +227,39 @@ export default {
     async edit (id) {
       this.loading = true
       this.disableButton = true
-      // this.user = new User()
+      // this.form = new Client()
       this.openModal(true)
       // console.log('id', id)
       try {
-        const usuario = await api.get(`/users/${id}`)
-        this.user = usuario.data
+        const cliente = await api.get(`/clientes/${id}`)
+        this.form = cliente.data
         this.loading = false
         this.disableButton = false
       } catch (error) {
         this.loading = false
         this.disableButton = false
-        this.user = new User()
+        this.form = new Client()
         this.$store.dispatch('notify', { success: false, message: error.response.data })
       }
     },
     add () {
       this.loading = false
       this.disableButton = false
-      this.user = new User()
+      this.form = new Client()
       this.openModal(false)
     },
     openModal (edit) {
       this.dialog = true
       this.editMode = edit
-      this.emailError = false
       // setTimeout(() => {
       //   this.$refs.form.resetValidation()
       // }, 100)
     },
     closeModal () {
-      this.user = new User()
+      this.form = new Client()
       this.editMode = false
       this.disableButton = false
       this.loading = false
-      this.emailError = false
       setTimeout(() => {
         this.$refs.form.resetValidation()
       }, 100)
@@ -330,12 +267,12 @@ export default {
     },
     async save () {
       if (this.$refs.form.validate()) {
-        console.log('save')
+        // console.log('save')
         this.loadingButton = true
         try {
           const res = this.editMode
-            ? await api.put(`/users/${this.user.id}`, this.user)
-            : await api.post('/users', this.user)
+            ? await api.put(`/clientes/${this.form.id}`, this.form)
+            : await api.post('/clientes', this.form)
           if (res.status === 200) {
             this.$store.dispatch('notify', { success: true, message: res.data })
             this.$emit('reloadTable')
@@ -343,11 +280,8 @@ export default {
             this.closeModal()
           }
           this.loadingButton = false
-          this.user = new User()
+          this.form = new Client()
         } catch (error) {
-          if (error.response.data.errors?.email) {
-            this.emailError = true
-          }
           this.loadingButton = false
           this.$store.dispatch('notify', { success: false, message: error.response.data })
         }
