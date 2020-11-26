@@ -51,6 +51,14 @@
             text
             x-small
             color="primary"
+            @click="$refs.clientDetailsDrawer.show(item)"
+          >
+            ver
+          </v-btn>
+          <v-btn
+            text
+            x-small
+            color="primary"
             @click="$refs.clientForm.edit(item.id)"
           >
             editar
@@ -65,14 +73,15 @@
           </v-btn>
         </div>
       </template>
-      <template v-slot:expanded-item="{ headers, item }">
+      <!-- <template v-slot:expanded-item="{ headers, item }">
         <td :colspan="headers.length">
           <client-details :item="item"/>
         </td>
-      </template>
+      </template> -->
     </v-data-table>
     <client-form ref="clientForm" @reloadTable="fetch"/>
     <confirm-modal ref="confirmModal" @reloadTable="fetch"/>
+    <client-details-drawer ref="clientDetailsDrawer"/>
   </div>
 </template>
 
@@ -80,13 +89,13 @@
 import dayjs from 'dayjs'
 import api from '@/api'
 import ClientForm from '@/components/modals/ClientFormModal'
-import ClientDetails from '@/components/ui/ClientDetails'
 import ConfirmModal from '@/components/modals/ConfirmModal'
+import ClientDetailsDrawer from '@/components/ui/ClientDetailsDrawer'
 
 export default {
   name: 'UsuariosTable',
   components: {
-    ClientDetails,
+    ClientDetailsDrawer,
     ClientForm,
     ConfirmModal
   },
@@ -136,6 +145,7 @@ export default {
       try {
         const clientes = await api.get('/clientes')
         this.clientesData = clientes.data
+        // console.log(clientes.data)
         this.loading = false
       } catch (error) {
         this.loading = false

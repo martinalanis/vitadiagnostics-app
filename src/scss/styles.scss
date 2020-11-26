@@ -51,6 +51,22 @@
   border-bottom: 1px solid rgba(0,0,0,0.2);
 }
 
+.quote {
+  position: relative;
+  padding-left: 1.1em;
+  color: #424649;
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    // background: rgba(0,0,0,0.2);
+    background: #424649;
+  }
+}
+
 .v_list_dense-h {
   min-height: 30px!important;
   &.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled).red-text {
