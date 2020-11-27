@@ -12,6 +12,17 @@ export const Client = () => {
   }
 }
 
+export const EquipoMedico = () => {
+  return {
+    cliente_id: '',
+    nombre: '',
+    modelo: '',
+    serie: '',
+    fabricante: '',
+    modalidad_id: ''
+  }
+}
+
 export const Refaccion = () => {
   return {
     nombre: '',

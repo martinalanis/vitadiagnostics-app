@@ -68,8 +68,8 @@
 
 <script>
 import api from '@/api'
-import RefaccionesForm from '@/components/modals/RefaccionesFormModal'
-import ConfirmSingleModal from '@/components/modals/ConfirmSingleModal'
+import RefaccionesForm from './RefaccionesFormModal'
+import ConfirmSingleModal from '@/components/ui/ConfirmSingleModal'
 
 export default {
   name: 'RefaccionesTable',

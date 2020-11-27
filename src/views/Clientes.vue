@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ClientesTable from '@/components/tables/ClientesTable'
+import ClientesTable from '@/modules/clientes/ClientesTable'
 
 export default {
   name: 'Clientes',

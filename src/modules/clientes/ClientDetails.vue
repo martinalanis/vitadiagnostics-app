@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import EquiposMedicos from '@/components/tables/EquiposMedicosTable'
+import EquiposMedicos from '@/modules/equiposMedicos/EquiposMedicosTable'
 export default {
   name: 'ClientDetails',
   components: {

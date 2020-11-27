@@ -121,10 +121,10 @@
 <script>
 import dayjs from 'dayjs'
 import api from '@/api'
-import UserForm from '@/components/modals/UserFormModal'
-import UserDetails from '@/components/ui/UserDetails'
-import ConfirmModal from '@/components/modals/ConfirmModal'
-import ChangePasswordModal from '@/components/modals/ChangePasswordModal'
+import UserForm from './UserFormModal'
+import UserDetails from './UserDetails'
+import ConfirmModal from '@/components/ui/AdminConfirmModal'
+import ChangePasswordModal from './ChangePasswordModal'
 
 export default {
   name: 'UsuariosTable',

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import RefaccionesTable from '@/components/tables/RefaccionesTable'
+import RefaccionesTable from '@/modules/refacciones/RefaccionesTable'
 
 export default {
   name: 'Refacciones',

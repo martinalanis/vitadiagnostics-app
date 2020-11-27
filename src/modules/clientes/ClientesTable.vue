@@ -41,8 +41,6 @@
       :loading="loading"
       :search="search"
       sort-by="nombre"
-      show-expand
-      single-expand
       class="elevation-2"
     >
       <template #item.id="{ item }">
@@ -53,54 +51,58 @@
             color="primary"
             @click="$refs.clientDetailsDrawer.show(item)"
           >
-            ver
+            detalles
           </v-btn>
-          <v-btn
-            text
-            x-small
-            color="primary"
-            @click="$refs.clientForm.edit(item.id)"
-          >
-            editar
-          </v-btn>
-          <v-btn
-            text
-            x-small
-            color="red"
-            @click="$refs.confirmModal.openModal(`/clientes/${item.id}`)"
-          >
-            eliminar
-          </v-btn>
+          <v-menu left offset-y offset-x :nudge-right="10">
+            <template v-slot:activator="{ on }">
+              <v-icon v-on="on">mdi-dots-vertical</v-icon>
+            </template>
+            <v-list dense class="py-0 text-right">
+              <v-list-item link @click="$refs.clientForm.edit(item.id)" class="px-2 py-0 v_list_dense-h">
+                <v-list-item-title class="caption">Editar información</v-list-item-title>
+              </v-list-item>
+              <v-list-item link @click="$refs.equipoMedicoModal.add(item)" class="px-2 py-0 v_list_dense-h">
+                <v-list-item-title class="caption">Agregar equipo médico</v-list-item-title>
+              </v-list-item>
+              <v-divider></v-divider>
+              <v-list-item
+                link
+                class="px-2 py-0 v_list_dense-h red-text"
+                @click="$refs.confirmModal.openModal(`/clientes/${item.id}`)"
+              >
+                <v-list-item-title class="caption">Eliminar</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </div>
       </template>
-      <!-- <template v-slot:expanded-item="{ headers, item }">
-        <td :colspan="headers.length">
-          <client-details :item="item"/>
-        </td>
-      </template> -->
     </v-data-table>
     <client-form ref="clientForm" @reloadTable="fetch"/>
     <confirm-modal ref="confirmModal" @reloadTable="fetch"/>
     <client-details-drawer ref="clientDetailsDrawer"/>
+    <equipo-medico-modal ref="equipoMedicoModal" @reloadData="fetch"/>
   </div>
 </template>
 
 <script>
 import dayjs from 'dayjs'
 import api from '@/api'
-import ClientForm from '@/components/modals/ClientFormModal'
-import ConfirmModal from '@/components/modals/ConfirmModal'
-import ClientDetailsDrawer from '@/components/ui/ClientDetailsDrawer'
+import ClientForm from './ClientFormModal'
+import EquipoMedicoModal from '@/modules/equiposMedicos/EquiposMedicosModal'
+import ConfirmModal from '@/components/ui/AdminConfirmModal'
+import ClientDetailsDrawer from './ClientDetailsDrawer'
 
 export default {
-  name: 'UsuariosTable',
+  name: 'ClientesTable',
   components: {
     ClientDetailsDrawer,
     ClientForm,
-    ConfirmModal
+    ConfirmModal,
+    EquipoMedicoModal
   },
   data () {
     return {
+      EMDialog: false,
       clientesData: [],
       headers: [
         {

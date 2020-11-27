@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ClientDetails from '@/components/ui/ClientDetails'
+import ClientDetails from './ClientDetails'
 
 export default {
   name: 'ClientDetailsDrawer',

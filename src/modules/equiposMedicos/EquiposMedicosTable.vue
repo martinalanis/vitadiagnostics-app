@@ -55,6 +55,10 @@ export default {
           value: 'serie'
         },
         {
+          text: 'Fabricante',
+          value: 'fabricante'
+        },
+        {
           text: 'Modalidad',
           value: 'modalidad.tag'
         },
