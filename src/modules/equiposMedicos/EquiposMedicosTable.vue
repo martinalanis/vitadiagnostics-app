@@ -1,13 +1,13 @@
 <template>
   <div>
-    <v-row class="align-center mb-2">
+    <v-row>
       <v-spacer></v-spacer>
       <v-col cols="auto">
         <v-btn
           dark
           outlined
           color="blue darken-4"
-          @click="$refs.refaccionesForm.add()"
+          @click="$refs.equipoMedicoForm.add()"
           class="d-none d-md-block caption"
         >
           <v-icon left small>mdi-tag</v-icon>
@@ -18,18 +18,18 @@
           fab
           small
           color="purple"
-          @click="$refs.refaccionesForm.add()"
+          @click="$refs.equipoMedicoForm.add()"
           class="d-block d-md-none"
         >
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-col>
     </v-row>
-    <v-row class="align-end mb-8">
+    <v-row class="align-end mb-3">
       <v-col cols="12" md="7">
         <v-text-field
           v-model="search"
-          label="Buscar en refacciones"
+          label="Buscar en equipos médicos"
           prepend-inner-icon="mdi-magnify"
           hide-details
           clearable
@@ -38,7 +38,7 @@
       </v-col>
       <v-spacer></v-spacer>
       <v-col cols="12" md="4">
-        <p class="subtitle-2 text--secondary mb-1">Agrupar por:</p>
+        <p class="subtitle-2 text--secondary mb-0">Agrupar por:</p>
         <v-select
           v-model="groupBy"
           placeholder="----"
@@ -77,7 +77,7 @@
             text
             x-small
             color="primary"
-            @click="$refs.refaccionesForm.edit(item.id)"
+            @click="$refs.equipoMedicoForm.edit(item.id)"
           >editar</v-btn>
           <v-btn
             text
@@ -88,20 +88,20 @@
         </div>
       </template>
     </v-data-table>
-    <!-- <refacciones-form ref="refaccionesForm" @reloadTable="fetch"/> -->
+    <equipo-medico-form ref="equipoMedicoForm" @reloadTable="fetch"/>
     <confirm-single-modal ref="confirmModal" @confirm="remove"/>
   </div>
 </template>
 
 <script>
 import api from '@/api'
-// import RefaccionesForm from './RefaccionesFormModal'
+import EquipoMedicoForm from './EquipoMedicoFormModal'
 import ConfirmSingleModal from '@/components/ui/ConfirmSingleModal'
 
 export default {
   name: 'EquiposMedicosTable',
   components: {
-    // RefaccionesForm,
+    EquipoMedicoForm,
     ConfirmSingleModal
   },
   data () {

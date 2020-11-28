@@ -69,17 +69,17 @@ export default {
         },
         {
           to: '/clientes',
-          icon: 'mdi-account',
+          icon: 'mdi-doctor',
           name: 'Clientes'
         },
         {
           to: '/refacciones',
-          icon: 'mdi-tag',
+          icon: 'mdi-tag-outline',
           name: 'Refacciones'
         },
         {
           to: '/equipos-medicos',
-          icon: 'mdi-tag',
+          icon: 'mdi-prescription',
           name: 'Equipos Médicos'
         },
         {
