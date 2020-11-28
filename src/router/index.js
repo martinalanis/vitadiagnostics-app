@@ -20,22 +20,27 @@ const routes = [
       {
         name: 'dashboard',
         path: '/dashboard',
-        component: () => import('@/views/Dashboard')
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard')
       },
       {
         name: 'clientes',
         path: '/clientes',
-        component: () => import('@/views/Clientes')
+        component: () => import(/* webpackChunkName: "clientes" */ '@/views/Clientes')
       },
       {
         name: 'usuarios',
         path: '/usuarios',
-        component: () => import('@/views/Usuarios')
+        component: () => import(/* webpackChunkName: "usuarios" */ '@/views/Usuarios')
       },
       {
         name: 'refacciones',
         path: '/refacciones',
-        component: () => import('@/views/Refacciones')
+        component: () => import(/* webpackChunkName: "refacciones" */ '@/views/Refacciones')
+      },
+      {
+        name: 'equiposMedicos',
+        path: '/equipos-medicos',
+        component: () => import(/* webpackChunkName: "equiposMedicos" */ '@/views/EquiposMedicos')
       }
     ],
     meta: {

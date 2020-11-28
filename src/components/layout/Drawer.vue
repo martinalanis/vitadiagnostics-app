@@ -78,6 +78,11 @@ export default {
           name: 'Refacciones'
         },
         {
+          to: '/equipos-medicos',
+          icon: 'mdi-tag',
+          name: 'Equipos Médicos'
+        },
+        {
           to: '/usuarios',
           icon: 'mdi-account',
           name: 'Usuarios'
