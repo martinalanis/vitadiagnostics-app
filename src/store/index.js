@@ -8,9 +8,13 @@ export default new Vuex.Store({
   state: {
     notification: false,
     notificationType: '',
-    notificationMessage: ''
+    notificationMessage: '',
+    drawer: null
   },
   mutations: {
+    SET_DRAWER (state, payload) {
+      state.drawer = payload
+    },
     SET_MESSAGE (state, payload) {
       state.notification = true
       state.notificationMessage = payload.message

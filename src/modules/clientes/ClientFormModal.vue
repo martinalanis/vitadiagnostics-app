@@ -26,7 +26,7 @@
               <v-text-field
                 v-model.trim="form.nombre"
                 label="Nombre"
-                :rules="validations.ruleAlpha"
+                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>

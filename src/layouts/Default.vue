@@ -1,5 +1,7 @@
 <template>
   <v-app>
+    <!-- Include Appbar -->
+    <app-bar/>
     <!-- Include Drawer -->
     <navigation-drawer/>
     <v-main>
@@ -18,7 +20,8 @@ export default {
   name: 'DefaultLayout',
 
   components: {
-    NavigationDrawer: () => import('@/components/layout/Drawer')
+    NavigationDrawer: () => import('@/components/layout/Drawer'),
+    AppBar: () => import('@/components/layout/AppBar')
     // Snackbar: () => import('./components/widgets/Snackbar')
   }
 

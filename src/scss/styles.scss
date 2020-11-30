@@ -74,7 +74,12 @@
 .lh-1 {
   line-height: 1.4!important;
 }
-
+.v-application--is-ltr .v-toolbar__content > .v-btn.v-btn--icon:first-child + .v-toolbar__title, .v-application--is-ltr .v-toolbar__extension > .v-btn.v-btn--icon:first-child + .v-toolbar__title {
+  padding-left: 0;
+  @media screen and (max-width: 960px) {
+    padding-left: 10px;
+  }
+}
 .v_list_dense-h {
   min-height: 30px!important;
   &.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled).red-text {

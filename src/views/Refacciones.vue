@@ -1,16 +1,11 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <h3 class="title">Refacciones</h3>
-      </v-col>
-    </v-row>
+  <div class="px-4">
     <v-row>
       <v-col>
         <refacciones-table/>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>

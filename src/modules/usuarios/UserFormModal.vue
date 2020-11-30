@@ -26,7 +26,7 @@
               <v-text-field
                 v-model.trim="user.nombre"
                 label="Nombre"
-                :rules="validations.ruleAlpha"
+                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
@@ -34,8 +34,7 @@
               <v-text-field
                 v-model.trim="user.titulo"
                 label="Titulo"
-                :rules="validations.ruleAlphaDot"
-                hint="Caracteres permitidos: . -"
+                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
@@ -53,9 +52,8 @@
               <v-textarea
                 v-model.trim="user.direccion"
                 label="Dirección"
-                :rules="validations.ruleAddress"
+                :rules="validations.req"
                 :loading="loading"
-                hint="Caracteres permitidos: . - #"
                 rows="1"
                 auto-grow
               />

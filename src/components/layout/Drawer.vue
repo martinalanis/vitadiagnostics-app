@@ -60,7 +60,6 @@ export default {
   name: 'NavigationDrawer',
   data () {
     return {
-      drawer: null,
       items: [
         {
           to: '/',
@@ -96,7 +95,15 @@ export default {
   computed: {
     ...mapState({
       user: state => state.auth.user
-    })
+    }),
+    drawer: {
+      set (val) {
+        this.$store.commit('SET_DRAWER', val)
+      },
+      get () {
+        return this.$store.state.drawer
+      }
+    }
   },
   methods: {
     async fetchUserData () {

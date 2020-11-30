@@ -1,16 +1,11 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <h3 class="title">USUARIOS</h3>
-      </v-col>
-    </v-row>
+  <div class="px-4">
     <v-row>
       <v-col>
         <usuarios-table/>
       </v-col>
     </v-row>
-  </v-container>
+  </div>
 </template>
 
 <script>
