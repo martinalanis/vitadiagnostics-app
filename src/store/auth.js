@@ -46,7 +46,11 @@ export default {
     closeSession ({ commit }) {
       // dispatch('notify', { success: true, message: message }, { root: true })
       commit('DESTROY_TOKEN')
-      router.go()
+      /**
+       * Al estar en login se ejecuta closeSession si los datos de acceso son incorrectos
+       * Se valida para prevenir error: NavigationDuplicated Navigating to current location
+       */
+      if (router.currentRoute.name !== 'login') router.go()
     }
   }
 }
