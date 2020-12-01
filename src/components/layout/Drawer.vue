@@ -13,8 +13,13 @@
         </v-list-item-avatar>
 
         <v-list-item-content>
-          <v-list-item-title class="white--text caption">{{ user.nombre }}</v-list-item-title>
-          <v-list-item-subtitle class="white--text caption">{{ user.email }}</v-list-item-subtitle>
+          <v-list-item-title class="white--text subtitle-2">{{ user.nombre }}</v-list-item-title>
+          <v-list-item-subtitle class="white-text--opacity caption">
+            <!-- <v-chip small outlined dark label color="blue">
+              {{ rol }}
+            </v-chip> -->
+            {{ rol }}
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </template>
@@ -54,7 +59,7 @@
 
 <script>
 import api from '@/api'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'NavigationDrawer',
@@ -96,6 +101,9 @@ export default {
     ...mapState({
       user: state => state.auth.user
     }),
+    ...mapGetters({
+      rol: 'auth/userRol'
+    }),
     drawer: {
       set (val) {
         this.$store.commit('SET_DRAWER', val)
@@ -118,7 +126,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

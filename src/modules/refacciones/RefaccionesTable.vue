@@ -44,7 +44,7 @@
       sort-desc
       class="elevation-2"
     >
-      <template #item.id="{ item }">
+      <template #item.id="{ item }" v-if="isAdmin">
         <div class="d-flex align-center justify-end h-100">
           <v-btn
             text
@@ -70,6 +70,7 @@
 import api from '@/api'
 import RefaccionesForm from './RefaccionesFormModal'
 import ConfirmSingleModal from '@/components/ui/ConfirmSingleModal'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'RefaccionesTable',
@@ -81,7 +82,7 @@ export default {
     return {
       refacciones: [],
       roles: [],
-      headers: [
+      initialHeaders: [
         {
           text: 'Nombre',
           value: 'nombre'
@@ -102,6 +103,14 @@ export default {
       ],
       search: '',
       loading: false
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'auth/isAdmin'
+    }),
+    headers () {
+      return this.isAdmin ? this.initialHeaders : this.initialHeaders.filter(row => row.value !== 'id')
     }
   },
   created () {

@@ -78,7 +78,7 @@
           {{ item.estatus }}
         </v-chip>
       </template>
-      <template #item.id="{ item }">
+      <template v-if="isAdmin" #item.id="{ item }">
         <div class="d-flex align-center justify-end h-100">
           <v-btn
             text
@@ -125,6 +125,7 @@ import UserForm from './UserFormModal'
 import UserDetails from './UserDetails'
 import ConfirmModal from '@/components/ui/AdminConfirmModal'
 import ChangePasswordModal from './ChangePasswordModal'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'UsuariosTable',
@@ -139,7 +140,7 @@ export default {
       filter: 'todos',
       usuariosData: [],
       roles: [],
-      headers: [
+      initialHeaders: [
         {
           text: 'Nombre',
           value: 'nombre'
@@ -174,6 +175,9 @@ export default {
     this.fetch()
   },
   computed: {
+    ...mapGetters({
+      isAdmin: 'auth/isAdmin'
+    }),
     usuarios () {
       return this.usuariosData.map(us => {
         return {
@@ -191,6 +195,9 @@ export default {
       return this.filter === 'todos'
         ? this.usuarios
         : this.usuarios.filter(user => user.estatus === this.filter)
+    },
+    headers () {
+      return this.isAdmin ? this.initialHeaders : this.initialHeaders.filter(row => row.value !== 'id')
     }
   },
   methods: {

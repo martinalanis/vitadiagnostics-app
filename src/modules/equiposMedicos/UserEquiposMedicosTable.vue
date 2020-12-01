@@ -6,7 +6,7 @@
       :search="search"
       sort-by="nombre"
     >
-      <template #item.id="{ item }">
+      <template v-if="isAdmin" #item.id="{ item }">
         <div class="d-flex align-center justify-end h-100">
           <v-btn
             text
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'EquiposMedicosTable',
   props: {
@@ -41,7 +42,7 @@ export default {
     return {
       // items: [],
       search: '',
-      headers: [
+      initialHeaders: [
         {
           text: 'Nombre',
           value: 'nombre'
@@ -68,6 +69,14 @@ export default {
           sortable: false
         }
       ]
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'auth/isAdmin'
+    }),
+    headers () {
+      return this.isAdmin ? this.initialHeaders : this.initialHeaders.filter(row => row.value !== 'id')
     }
   }
 }

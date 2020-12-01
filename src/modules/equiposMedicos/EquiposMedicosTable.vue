@@ -71,7 +71,7 @@
           <span v-else>{{ items[0].fabricante }}</span>
         </th>
       </template>
-      <template #item.id="{ item }">
+      <template v-if="isAdmin" #item.id="{ item }">
         <div class="d-flex align-center justify-end h-100">
           <v-btn
             text
@@ -97,6 +97,7 @@
 import api from '@/api'
 import EquipoMedicoForm from './EquipoMedicoFormModal'
 import ConfirmSingleModal from '@/components/ui/ConfirmSingleModal'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'EquiposMedicosTable',
@@ -123,7 +124,7 @@ export default {
           value: 'fabricante'
         }
       ],
-      headers: [
+      initialHeaders: [
         {
           text: 'Nombre',
           value: 'nombre'
@@ -156,6 +157,14 @@ export default {
       ],
       search: '',
       loading: false
+    }
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: 'auth/isAdmin'
+    }),
+    headers () {
+      return this.isAdmin ? this.initialHeaders : this.initialHeaders.filter(row => row.value !== 'id')
     }
   },
   created () {

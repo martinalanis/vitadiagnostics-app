@@ -58,20 +58,31 @@
               <v-icon v-on="on">mdi-dots-vertical</v-icon>
             </template>
             <v-list dense class="py-0 text-right">
-              <v-list-item link @click="$refs.clientForm.edit(item.id)" class="px-2 py-0 v_list_dense-h">
+              <v-list-item
+                v-if="isAdmin"
+                link
+                @click="$refs.clientForm.edit(item.id)"
+                class="px-2 py-0 v_list_dense-h"
+              >
                 <v-list-item-title class="caption">Editar información</v-list-item-title>
               </v-list-item>
-              <v-list-item link @click="$refs.equipoMedicoModal.add(item)" class="px-2 py-0 v_list_dense-h">
-                <v-list-item-title class="caption">Agregar equipo médico</v-list-item-title>
-              </v-list-item>
-              <v-divider></v-divider>
               <v-list-item
                 link
-                class="px-2 py-0 v_list_dense-h red-text"
-                @click="$refs.confirmModal.openModal(`/clientes/${item.id}`)"
+                @click="$refs.equipoMedicoModal.add(item)"
+                class="px-2 py-0 v_list_dense-h"
               >
-                <v-list-item-title class="caption">Eliminar</v-list-item-title>
+                <v-list-item-title class="caption">Agregar equipo médico</v-list-item-title>
               </v-list-item>
+              <template v-if="isAdmin">
+                <v-divider></v-divider>
+                <v-list-item
+                  link
+                  class="px-2 py-0 v_list_dense-h red-text"
+                  @click="$refs.confirmModal.openModal(`/clientes/${item.id}`)"
+                >
+                  <v-list-item-title class="caption">Eliminar</v-list-item-title>
+                </v-list-item>
+              </template>
             </v-list>
           </v-menu>
         </div>
@@ -91,6 +102,7 @@ import ClientForm from './ClientFormModal'
 import EquipoMedicoModal from '@/modules/equiposMedicos/EquiposMedicosModal'
 import ConfirmModal from '@/components/ui/AdminConfirmModal'
 import ClientDetailsDrawer from './ClientDetailsDrawer'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ClientesTable',
@@ -139,7 +151,10 @@ export default {
           lastModified: dayjs(obj.updated_at).format('DD/MM/YYYY HH:mm:ss') || ''
         }
       })
-    }
+    },
+    ...mapGetters({
+      isAdmin: 'auth/isAdmin'
+    })
   },
   methods: {
     async fetch () {

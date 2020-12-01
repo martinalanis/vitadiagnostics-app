@@ -11,6 +11,12 @@ export default {
   getters: {
     isLogged (state) {
       return !!state.token
+    },
+    isAdmin (state) {
+      return !!(state.user && state.user.rol && state.user.rol.nombre === 'administrador')
+    },
+    userRol (state) {
+      return state.user && state.user.rol && state.user.rol.nombre
     }
   },
   mutations: {
@@ -40,7 +46,7 @@ export default {
     closeSession ({ commit }) {
       // dispatch('notify', { success: true, message: message }, { root: true })
       commit('DESTROY_TOKEN')
-      router.push({ name: 'login' })
+      router.go()
     }
   }
 }

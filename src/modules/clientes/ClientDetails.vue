@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="6">
+    <v-col cols="12" md="6">
       <h4 class="mb-4 text--secondary border-bottom pb-1">GENERALES</h4>
       <p>
         <small class="text--secondary">NOMBRE</small><br>
@@ -25,7 +25,7 @@
         </p>
       </div>
     </v-col>
-    <v-col cols="6">
+    <v-col cols="12" md="6">
       <h4 class="mb-6 text--secondary border-bottom pb-1">CONTACTO</h4>
       <p>
         <small class="text--secondary">EMAIL</small><br>
@@ -55,7 +55,7 @@
       </div>
     </v-col>
     <v-col cols="12">
-      <h4 class="text--secondary border-bottom pb-1">EQUIPOS MEDICOS</h4>
+      <h4 class="text--secondary border-bottom pb-1 mb-6">EQUIPOS MEDICOS</h4>
       <equipos-medicos :items="item.equipos_medicos"/>
     </v-col>
   </v-row>
