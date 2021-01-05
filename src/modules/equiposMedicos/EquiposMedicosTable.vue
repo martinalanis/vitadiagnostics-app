@@ -117,7 +117,7 @@ export default {
         },
         {
           text: 'Modalidad',
-          value: 'modalidad'
+          value: 'modalidad_id'
         },
         {
           text: 'Fabricante',

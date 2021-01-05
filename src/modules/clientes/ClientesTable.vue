@@ -61,7 +61,7 @@
               <v-list-item
                 v-if="isAdmin"
                 link
-                @click="$refs.clientForm.edit(item.id)"
+                @click="$refs.clientForm.edit(item)"
                 class="px-2 py-0 v_list_dense-h"
               >
                 <v-list-item-title class="caption">Editar información</v-list-item-title>
@@ -160,8 +160,7 @@ export default {
     async fetch () {
       this.loading = true
       try {
-        const clientes = await api.get('/clientes')
-        this.clientesData = clientes.data
+        this.clientesData = await api.get('/clientes').then(res => res.data)
         // console.log(clientes.data)
         this.loading = false
       } catch (error) {

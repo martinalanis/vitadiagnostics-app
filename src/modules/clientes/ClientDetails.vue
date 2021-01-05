@@ -42,7 +42,7 @@
       <div>
         <p class="d-inline-block mr-6">
           <small class="text--secondary">CP</small><br>
-          {{ item.cp }}
+          {{ item.cp || '--' }}
         </p>
         <p class="d-inline-block mr-6">
           <small class="text--secondary">ESTADO</small><br>

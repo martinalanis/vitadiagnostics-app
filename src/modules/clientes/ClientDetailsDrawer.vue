@@ -7,7 +7,10 @@
     width="90%"
   >
     <div class="pa-5">
-      <h3 class="text-navy quote mb-5">DETALLES DEL CLIENTE</h3>
+      <div class="d-flex justify-space-between align-center mb-5">
+        <h3 class="text-navy quote">DETALLES DEL CLIENTE</h3>
+        <v-btn icon @click="drawer = false"><v-icon>mdi-close</v-icon></v-btn>
+      </div>
       <client-details :item="item"/>
     </div>
   </v-navigation-drawer>

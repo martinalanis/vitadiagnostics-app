@@ -25,7 +25,7 @@
             <v-col cols="12" class="py-1">
               <v-text-field
                 v-model.trim="form.nombre"
-                label="Nombre"
+                label="Nombre*"
                 :rules="validations.req"
                 :loading="loading"
               />
@@ -34,7 +34,6 @@
               <v-text-field
                 v-model.trim="form.razon_social"
                 label="Razón Social"
-                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
@@ -50,7 +49,7 @@
             <v-col cols="12" class="py-1">
               <v-textarea
                 v-model.trim="form.direccion"
-                label="Dirección"
+                label="Dirección*"
                 :rules="validations.ruleAddress"
                 :loading="loading"
                 hint="Caracteres permitidos: . - #"
@@ -72,7 +71,6 @@
               <v-text-field
                 v-model.trim="form.rfc"
                 label="RFC"
-                :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
@@ -89,7 +87,7 @@
             <v-col cols="6" class="py-1">
               <v-select
                 v-model="form.estado"
-                label="Estado"
+                label="Estado*"
                 :items="estados"
                 :rules="validations.req"
                 :loading="loading"
@@ -100,12 +98,15 @@
               <v-select
                 v-model="form.municipio"
                 :items="municipios"
-                label="Municipio"
+                label="Municipio*"
                 :rules="validations.req"
                 :loading="loading"
                 :disabled="!this.form.estado"
                 clearable
               />
+            </v-col>
+            <v-col cols="12">
+              <p class="text--grey mb-0"><small>(*)Campos requeridos</small></p>
             </v-col>
           </v-row>
         </v-card-text>
@@ -176,13 +177,12 @@ export default {
           }
         ],
         ruleCp: [
-          value => !!value || 'Campo requerido.',
           value => {
-            if (value.length) {
+            if (value?.length) {
               const pattern = /^[0-9]{5}$/
               return pattern.test(value) || 'CP no válido.'
             }
-            return false
+            return true
           }
         ],
         ruleNumber: [
@@ -193,19 +193,27 @@ export default {
           }
         ],
         ruleTelephone: [
-          value => !!value || 'Campo requerido.',
-          value => (value || '').length <= 10 || 'Max 10 caracteres',
           value => {
-            const pattern = /^[0-9]+$/
-            return pattern.test(value) || 'Ingresa solo números.'
+            if (value?.length) {
+              return (value || '').length <= 10 || 'Max 10 caracteres'
+            }
+            return true
+          },
+          value => {
+            if (value?.length) {
+              const pattern = /^[0-9]+$/
+              return pattern.test(value) || 'Ingresa solo números.'
+            }
+            return true
           }
         ],
         ruleEmail: [
-          value => !!value || 'Campo requerido.',
           value => {
-            // const pattern = /^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/
-            const pattern = /^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$/
-            return pattern.test(value) || 'Email no válido.'
+            if (value?.length) {
+              const pattern = /^[a-zA-Z0-9]+(\.[_a-zA-Z0-9]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,15})$/
+              return pattern.test(value) || 'Email no válido.'
+            }
+            return true
           }
         ]
       }
@@ -224,23 +232,27 @@ export default {
     }
   },
   methods: {
-    async edit (id) {
-      this.loading = true
-      this.disableButton = true
-      // this.form = new Client()
+    // async edit (id) {
+    //   this.loading = true
+    //   this.disableButton = true
+    //   // this.form = new Client()
+    //   this.openModal(true)
+    //   // console.log('id', id)
+    //   try {
+    //     const cliente = await api.get(`/clientes/${id}`)
+    //     this.form = cliente.data
+    //     this.loading = false
+    //     this.disableButton = false
+    //   } catch (error) {
+    //     this.loading = false
+    //     this.disableButton = false
+    //     this.form = new Client()
+    //     this.$store.dispatch('notify', { success: false, message: error.response.data })
+    //   }
+    // },
+    edit (item) {
       this.openModal(true)
-      // console.log('id', id)
-      try {
-        const cliente = await api.get(`/clientes/${id}`)
-        this.form = cliente.data
-        this.loading = false
-        this.disableButton = false
-      } catch (error) {
-        this.loading = false
-        this.disableButton = false
-        this.form = new Client()
-        this.$store.dispatch('notify', { success: false, message: error.response.data })
-      }
+      this.form = { ...item }
     },
     add () {
       this.loading = false
@@ -260,9 +272,10 @@ export default {
       this.editMode = false
       this.disableButton = false
       this.loading = false
-      setTimeout(() => {
-        this.$refs.form.resetValidation()
-      }, 100)
+      this.$refs.form.resetValidation()
+      // setTimeout(() => {
+      //   this.$refs.form.resetValidation()
+      // }, 100)
       this.dialog = false
     },
     async save () {

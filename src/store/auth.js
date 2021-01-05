@@ -21,6 +21,7 @@ export default {
   },
   mutations: {
     SET_TOKEN (state, token) {
+      // expires 0.5 = 12 hrs
       Cookies.set('vd_token', token, { expires: 0.5 })
       state.token = token
     },
