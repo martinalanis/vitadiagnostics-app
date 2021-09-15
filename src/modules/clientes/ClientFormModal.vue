@@ -50,9 +50,8 @@
               <v-textarea
                 v-model.trim="form.direccion"
                 label="Dirección*"
-                :rules="validations.ruleAddress"
+                :rules="validations.req"
                 :loading="loading"
-                hint="Caracteres permitidos: . - #"
                 rows="1"
                 auto-grow
               />

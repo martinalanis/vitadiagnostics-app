@@ -4,7 +4,7 @@
       <v-col cols="auto" md="8">
         <v-text-field
           v-model="search"
-          label="Buscar en refacciones"
+          label="Buscar en cotizaciones"
           prepend-inner-icon="mdi-magnify"
           hide-details
           clearable
@@ -17,18 +17,16 @@
           dark
           outlined
           color="blue darken-4"
-          @click="$refs.refaccionesForm.add()"
           class="d-none d-md-block caption"
         >
-          <v-icon left small>mdi-tag</v-icon>
-          agregar refaccion
+          <v-icon left small>mdi-text-box-plus-outline</v-icon>
+          nueva cotización
         </v-btn>
         <v-btn
           dark
           fab
           small
           color="purple"
-          @click="$refs.refaccionesForm.add()"
           class="d-block d-md-none"
         >
           <v-icon>mdi-plus</v-icon>
@@ -37,7 +35,7 @@
     </v-row>
     <v-data-table
       :headers="headers"
-      :items="refacciones"
+      :items="cotizaciones"
       :loading="loading"
       :search="search"
       sort-by="id"
@@ -50,49 +48,49 @@
             text
             x-small
             color="primary"
-            @click="$refs.refaccionesForm.edit(item.id)"
-          >editar</v-btn>
+          >editar {{ item.id }}</v-btn>
           <v-btn
             text
             x-small
             color="error"
-            @click="$refs.confirmModal.open(item.nombre, item.id)"
           >eliminar</v-btn>
         </div>
       </template>
     </v-data-table>
-    <refacciones-form ref="refaccionesForm" @reloadTable="fetch"/>
     <confirm-single-modal ref="confirmModal" @confirm="remove"/>
   </div>
 </template>
 
 <script>
+import dayjs from 'dayjs'
 import api from '@/api'
-import RefaccionesForm from './RefaccionesFormModal'
 import ConfirmSingleModal from '@/components/ui/ConfirmSingleModal'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'RefaccionesTable',
   components: {
-    RefaccionesForm,
     ConfirmSingleModal
   },
   data () {
     return {
-      refacciones: [],
+      cotizacionesData: [],
       initialHeaders: [
         {
-          text: 'Nombre',
-          value: 'nombre'
+          text: 'Cliente',
+          value: 'cliente.nombre'
         },
         {
-          text: 'No. Parte',
-          value: 'num_parte'
+          text: 'Tipo',
+          value: 'tipo.nombre'
         },
         {
-          text: 'Modalidad',
-          value: 'modalidad.nombre'
+          text: 'Estatus',
+          value: 'estatus'
+        },
+        {
+          text: 'Fecha',
+          value: 'fecha'
         },
         {
           text: '',
@@ -108,6 +106,14 @@ export default {
     ...mapGetters({
       isAdmin: 'auth/isAdmin'
     }),
+    cotizaciones () {
+      return this.cotizacionesData.map(ct => {
+        return {
+          ...ct,
+          fecha: dayjs(ct.fecha).format('DD/MM/YYYY HH:mm:ss') || ''
+        }
+      })
+    },
     headers () {
       /**
        * Ocultar columna de edicion en los headers
@@ -123,7 +129,8 @@ export default {
     async fetch () {
       this.loading = true
       try {
-        this.refacciones = await api.get('/refacciones').then(res => res.data)
+        this.cotizacionesData = await api.get('/cotizaciones').then(res => res.data)
+        console.log('cotizaciones', this.cotizaciones)
         this.loading = false
       } catch (error) {
         this.loading = false

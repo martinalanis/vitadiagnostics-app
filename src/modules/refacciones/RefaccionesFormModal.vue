@@ -31,19 +31,23 @@
             </v-col>
             <v-col cols="12" class="py-1">
               <v-text-field
-                v-model.trim="form.modelo"
-                label="Modelo"
+                v-model.trim="form.num_parte"
+                label="No. Parte"
                 :rules="validations.req"
                 :loading="loading"
               />
             </v-col>
             <v-col cols="12" class="py-1">
-              <v-text-field
-                v-model.trim="form.serie"
-                label="Serie"
+              <v-select
+                v-model="form.modalidad_id"
+                label="Modalidades"
+                clearable
+                :items="modalidades"
                 :rules="validations.req"
                 :loading="loading"
-              />
+                item-text="tag"
+                item-value="id"
+              ></v-select>
             </v-col>
           </v-row>
         </v-card-text>
@@ -87,12 +91,16 @@ export default {
       disableButton: false,
       loadingButton: false,
       form: new Refaccion(),
+      modalidades: [],
       validations: {
         req: [
           value => !!value || 'Campo requerido.'
         ]
       }
     }
+  },
+  created () {
+    this.getModalidades()
   },
   methods: {
     async edit (id) {
@@ -111,6 +119,16 @@ export default {
         this.disableButton = false
         this.form = new Refaccion()
         this.$store.dispatch('notify', { success: false, message: error.response.data })
+      }
+    },
+    async getModalidades () {
+      try {
+        this.modalidades = await api.get('/equipos-medicos/modalidades').then(res => res.data)
+        console.log(this.modalidades)
+        // this.modalidades = res.data
+      } catch (error) {
+        this.$store.dispatch('notify', { success: false, message: error.response.data })
+        this.$emit('close')
       }
     },
     add () {

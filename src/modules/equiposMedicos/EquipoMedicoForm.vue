@@ -115,9 +115,9 @@ export default {
     },
     async getModalidades () {
       try {
-        const res = await api.get('/equipos-medicos/modalidades')
-        console.log(res.data)
-        this.modalidades = res.data
+        this.modalidades = await api.get('/equipos-medicos/modalidades').then(res => res.data)
+        // console.log(res.data)
+        // this.modalidades = res.data
       } catch (error) {
         this.$store.dispatch('notify', { success: false, message: error.response.data })
         this.$emit('close')

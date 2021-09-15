@@ -204,10 +204,8 @@ export default {
     async fetch () {
       this.loading = true
       try {
-        const users = await api.get('/users')
-        const roles = await api.get('/roles')
-        this.usuariosData = users.data
-        this.roles = roles.data
+        this.usuariosData = await api.get('/users').then(res => res.data)
+        this.roles = await api.get('/roles').then(res => res.data)
         this.loading = false
       } catch (error) {
         this.loading = false

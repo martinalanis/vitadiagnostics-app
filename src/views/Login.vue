@@ -97,11 +97,11 @@ export default {
         // console.log(this.form)
         this.loading = true
         try {
-          const res = await api.post('/auth/login', this.form)
-          console.log(res.data)
-          if (res.data.token) {
+          const token = await api.post('/auth/login', this.form).then(res => res.data.token)
+          // console.log(token)
+          if (token) {
             this.$store.dispatch('notify', { success: true, message: 'Bienvenido' })
-            this.$store.commit('auth/SET_TOKEN', res.data.token)
+            this.$store.commit('auth/SET_TOKEN', token)
             this.$router.replace({ name: 'dashboard' })
           }
           this.loading = false

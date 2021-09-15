@@ -18,19 +18,24 @@ const routes = [
         redirect: '/dashboard'
       },
       {
-        name: 'dashboard',
-        path: '/dashboard',
-        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard')
-      },
-      {
         name: 'clientes',
         path: '/clientes',
         component: () => import(/* webpackChunkName: "clientes" */ '@/views/Clientes')
       },
       {
-        name: 'usuarios',
-        path: '/usuarios',
-        component: () => import(/* webpackChunkName: "usuarios" */ '@/views/Usuarios')
+        name: 'cotizaciones',
+        path: '/cotizaciones',
+        component: () => import(/* webpackChunkName: "cotizaciones" */ '@/views/Cotizaciones')
+      },
+      {
+        name: 'dashboard',
+        path: '/dashboard',
+        component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard')
+      },
+      {
+        name: 'equiposMedicos',
+        path: '/equipos-medicos',
+        component: () => import(/* webpackChunkName: "equiposMedicos" */ '@/views/EquiposMedicos')
       },
       {
         name: 'refacciones',
@@ -38,9 +43,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "refacciones" */ '@/views/Refacciones')
       },
       {
-        name: 'equiposMedicos',
-        path: '/equipos-medicos',
-        component: () => import(/* webpackChunkName: "equiposMedicos" */ '@/views/EquiposMedicos')
+        name: 'usuarios',
+        path: '/usuarios',
+        component: () => import(/* webpackChunkName: "usuarios" */ '@/views/Usuarios')
       }
     ],
     meta: {
@@ -62,7 +67,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const isLogged = store.getters['auth/isLogged']
-  console.log(isLogged)
+  // console.log(isLogged)
   const authorization = to.matched.some(record => record.meta.requiresAuth)
 
   // if (authorization && isLogged) {
@@ -93,7 +98,7 @@ router.beforeEach((to, from, next) => {
      * Se quiere ingresar a ruta protegida y se esta logueado
      * se quiere ingresar a login y no se esta logueado
      */
-    console.log(to)
+    // console.log(to)
     next()
   }
 })

@@ -26,8 +26,8 @@ export const EquipoMedico = () => {
 export const Refaccion = () => {
   return {
     nombre: '',
-    modelo: '',
-    serie: ''
+    num_parte: '',
+    modalidad_id: ''
   }
 }
 

@@ -3,6 +3,8 @@
     v-model="$store.state.notification"
     :color="$store.state.notificationType"
     :timeout="4000"
+    transition="scroll-x-reverse-transition"
+    right
   >
     {{ $store.state.notificationMessage }}
     <template v-slot:action="{ attrs }">

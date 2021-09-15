@@ -72,6 +72,11 @@ export default {
           name: 'Inicio'
         },
         {
+          to: '/cotizaciones',
+          icon: 'mdi-clipboard-multiple-outline',
+          name: 'Cotizaciones'
+        },
+        {
           to: '/clientes',
           icon: 'mdi-doctor',
           name: 'Clientes'
@@ -117,7 +122,7 @@ export default {
     async fetchUserData () {
       try {
         const res = await api.get('/auth/me')
-        console.log(res.data)
+        // console.log(res.data)
         this.$store.commit('auth/SET_USER', res.data)
       } catch (error) {
         this.$store.dispatch('notify', { success: false, message: error.response.data })

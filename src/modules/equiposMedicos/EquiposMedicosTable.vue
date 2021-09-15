@@ -53,7 +53,7 @@
     </v-row>
     <v-data-table
       :headers="headers"
-      :items="equiposMedicos"
+      :items="equiposMedicosFormated"
       :loading="loading"
       :search="search"
       sort-by="id"
@@ -62,12 +62,13 @@
       class="elevation-2"
     >
       <template v-slot:group.header="{items, groupBy, isOpen, toggle}">
-        <th colspan="7">
+        <th colspan="8">
           <v-icon @click="toggle" left>
             {{ isOpen ? 'mdi-minus' : 'mdi-plus' }}
           </v-icon>
           <span v-if="groupBy[0] === 'cliente.nombre'">{{ items[0].cliente.nombre }}</span>
-          <span v-else-if="groupBy[0] === 'modalidad'">{{ items[0].modalidad.nombre }}</span>
+          <span v-else-if="groupBy[0] === 'lugar'">{{ items[0].lugar }}</span>
+          <span v-else-if="groupBy[0] === 'modalidad_id'">{{ items[0].modalidad.nombre }}</span>
           <span v-else>{{ items[0].fabricante }}</span>
         </th>
       </template>
@@ -116,6 +117,10 @@ export default {
           value: 'cliente.nombre'
         },
         {
+          text: 'Lugar',
+          value: 'lugar'
+        },
+        {
           text: 'Modalidad',
           value: 'modalidad_id'
         },
@@ -128,6 +133,10 @@ export default {
         {
           text: 'Nombre',
           value: 'nombre'
+        },
+        {
+          text: 'Lugar',
+          value: 'lugar'
         },
         {
           text: 'Modelo',
@@ -165,6 +174,14 @@ export default {
     }),
     headers () {
       return this.isAdmin ? this.initialHeaders : this.initialHeaders.filter(row => row.value !== 'id')
+    },
+    equiposMedicosFormated () {
+      return this.equiposMedicos.map(obj => {
+        return {
+          ...obj,
+          lugar: `${obj.cliente.municipio}, ${obj.cliente.estado}`
+        }
+      })
     }
   },
   created () {
@@ -174,8 +191,7 @@ export default {
     async fetch () {
       this.loading = true
       try {
-        const equiposMedicos = await api.get('/equipos-medicos')
-        this.equiposMedicos = equiposMedicos.data
+        this.equiposMedicos = await api.get('/equipos-medicos').then(res => res.data)
         this.loading = false
       } catch (error) {
         this.loading = false
